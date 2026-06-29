@@ -1,0 +1,41 @@
+.quote-band {
+  position: relative;
+  background: linear-gradient(150deg, #0d0d0d 0%, #1e0505 55%, #0d0d0d 100%);
+  color: #fff;
+  text-align: center;
+  padding: 110px 24px;
+  overflow: hidden;
+}
+.quote-deco {
+  position: absolute;
+  top: -60px; left: 20px;
+  font-family: var(--font-display);
+  font-size: 28rem;
+  color: rgba(255,255,255,0.025);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.quote-inner p {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3.2vw, 2.1rem);
+  font-style: italic;
+  font-weight: 400;
+  max-width: 820px;
+  margin: 0 auto 22px;
+  line-height: 1.68;
+  color: rgba(255,255,255,0.93);
+  letter-spacing: 0.2px;
+}
+.quote-inner span {
+  font-family: var(--font-cinzel);
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+@media (max-width: 768px) {
+  .quote-band { padding: 80px 24px; }
+  .quote-deco { font-size: 16rem; }
+}

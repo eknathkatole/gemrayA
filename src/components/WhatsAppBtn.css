@@ -1,0 +1,41 @@
+.wa-btn {
+  position: fixed;
+  bottom: 32px; right: 32px;
+  z-index: 1100;
+  width: 60px; height: 60px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 24px rgba(37,211,102,0.55);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: waPulse 2.4s ease infinite;
+}
+.wa-btn svg { width: 32px; height: 32px; }
+.wa-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 12px 36px rgba(37,211,102,0.7);
+  animation: none;
+}
+
+.wa-tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  background: #fff;
+  color: #111;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateX(8px);
+}
+.wa-btn:hover .wa-tooltip { opacity: 1; transform: translateX(0); }
+
+@keyframes waPulse {
+  0%,100% { box-shadow: 0 6px 24px rgba(37,211,102,0.55); }
+  50%      { box-shadow: 0 6px 24px rgba(37,211,102,0.55), 0 0 0 12px rgba(37,211,102,0.12); }
+}
