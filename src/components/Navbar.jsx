@@ -23,7 +23,7 @@ export default function Navbar() {
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${menuOpen ? 'menu-open' : ''}`}>
       <a href="#home" className="nav-logo" onClick={() => setMenuOpen(false)}>
-        <img src="/photos/logo.png" alt="Gemray Studio" />
+        <img src={`${import.meta.env.BASE_URL}photos/logo.png`} alt="Gemray Studio" />
         <div className="nav-logo-text">
           <span className="logo-main">Gemray</span>
           <span className="logo-sub">Studio</span>

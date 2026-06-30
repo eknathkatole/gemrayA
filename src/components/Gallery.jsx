@@ -1,29 +1,30 @@
-import { useState, useEffect, useRef } from 'react';
-import AlbumViewer from './AlbumViewer';
+import { useState, useRef } from 'react';
 import useReveal from '../hooks/useReveal';
 import './Gallery.css';
 
+const BASE = import.meta.env.BASE_URL;
+
 const allPhotos = [
-  { src: '/photos/photo1.jpg',  cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo2.jpg',  cat: 'prewedding', alt: 'Pre-Wedding' },
-  { src: '/photos/photo3.jpg',  cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo4.jpg',  cat: 'engagement', alt: 'Engagement' },
-  { src: '/photos/photo5.jpg',  cat: 'prewedding', alt: 'Pre-Wedding' },
-  { src: '/photos/photo6.jpg',  cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo7.jpg',  cat: 'engagement', alt: 'Engagement' },
-  { src: '/photos/photo8.jpg',  cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo9.jpg',  cat: 'prewedding', alt: 'Pre-Wedding' },
-  { src: '/photos/photo10.jpg', cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo11.jpg', cat: 'engagement', alt: 'Engagement' },
-  { src: '/photos/photo12.jpg', cat: 'prewedding', alt: 'Pre-Wedding' },
-  { src: '/photos/photo13.jpg', cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo14.jpg', cat: 'prewedding', alt: 'Pre-Wedding' },
-  { src: '/photos/photo15.jpg', cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo16.jpg', cat: 'engagement', alt: 'Engagement' },
-  { src: '/photos/photo17.jpg', cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo18.jpg', cat: 'prewedding', alt: 'Pre-Wedding' },
-  { src: '/photos/photo19.jpg', cat: 'wedding',    alt: 'Wedding' },
-  { src: '/photos/photo20.jpg', cat: 'engagement', alt: 'Engagement' },
+  { src: `${BASE}photos/photo1.jpg`,  cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo2.jpg`,  cat: 'prewedding', alt: 'Pre-Wedding' },
+  { src: `${BASE}photos/photo3.jpg`,  cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo4.jpg`,  cat: 'engagement', alt: 'Engagement' },
+  { src: `${BASE}photos/photo5.jpg`,  cat: 'prewedding', alt: 'Pre-Wedding' },
+  { src: `${BASE}photos/photo6.jpg`,  cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo7.jpg`,  cat: 'engagement', alt: 'Engagement' },
+  { src: `${BASE}photos/photo8.jpg`,  cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo9.jpg`,  cat: 'prewedding', alt: 'Pre-Wedding' },
+  { src: `${BASE}photos/photo10.jpg`, cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo11.jpg`, cat: 'engagement', alt: 'Engagement' },
+  { src: `${BASE}photos/photo12.jpg`, cat: 'prewedding', alt: 'Pre-Wedding' },
+  { src: `${BASE}photos/photo13.jpg`, cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo14.jpg`, cat: 'prewedding', alt: 'Pre-Wedding' },
+  { src: `${BASE}photos/photo15.jpg`, cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo16.jpg`, cat: 'engagement', alt: 'Engagement' },
+  { src: `${BASE}photos/photo17.jpg`, cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo18.jpg`, cat: 'prewedding', alt: 'Pre-Wedding' },
+  { src: `${BASE}photos/photo19.jpg`, cat: 'wedding',    alt: 'Wedding' },
+  { src: `${BASE}photos/photo20.jpg`, cat: 'engagement', alt: 'Engagement' },
 ];
 
 const tabs = [
@@ -34,26 +35,32 @@ const tabs = [
 ];
 
 export default function Gallery() {
-  const [activeTab, setActiveTab]     = useState('all');
-  const [visible, setVisible]         = useState(allPhotos);
-  const [animating, setAnimating]     = useState(false);
-  const [albumOpen, setAlbumOpen]     = useState(false);
-  const [albumIndex, setAlbumIndex]   = useState(0);
+  const [activeTab, setActiveTab]       = useState('all');
+  const [filteredPhotos, setFilteredPhotos] = useState(allPhotos);
+  const [animating, setAnimating]       = useState(false);
+  const [limit, setLimit]               = useState(8);
   const ref = useReveal();
+
+  const displayPhotos = filteredPhotos.slice(0, limit);
+  const showSeeMore = filteredPhotos.length > 8;
 
   function switchTab(key) {
     if (key === activeTab || animating) return;
     setAnimating(true);
+    setLimit(8); // Reset limit on tab switch
     setTimeout(() => {
       setActiveTab(key);
-      setVisible(key === 'all' ? allPhotos : allPhotos.filter(p => p.cat === key));
+      setFilteredPhotos(key === 'all' ? allPhotos : allPhotos.filter(p => p.cat === key));
       setAnimating(false);
-    }, 280);
+    }, 400);
   }
 
-  function openAlbum(idx) {
-    setAlbumIndex(idx);
-    setAlbumOpen(true);
+  function toggleLimit() {
+    if (limit === 8) {
+      setLimit(filteredPhotos.length);
+    } else {
+      setLimit(8);
+    }
   }
 
   return (
@@ -75,16 +82,15 @@ export default function Gallery() {
         </div>
 
         <div className={`gallery-grid ${animating ? 'fading' : ''}`}>
-          {visible.map((photo, i) => (
+          {displayPhotos.map((photo, i) => (
             <div
               key={photo.src}
               className={`g-item reveal scale-in d${(i % 6) + 1}`}
-              onClick={() => openAlbum(i)}
             >
               <img src={photo.src} alt={photo.alt} loading="lazy" />
               <div className="g-overlay">
                 <div className="g-overlay-content">
-                  <div className="g-zoom-icon">🔍</div>
+                  <div className="g-zoom-icon">🖼️</div>
                   <span>{photo.alt}</span>
                 </div>
               </div>
@@ -93,20 +99,14 @@ export default function Gallery() {
           ))}
         </div>
 
-        <div className="album-open-wrap reveal d3">
-          <button className="btn-primary album-open-btn" onClick={() => openAlbum(0)}>
-            📖 Open Full Photo Album
-          </button>
-        </div>
+        {showSeeMore && (
+          <div className="album-open-wrap reveal d3">
+            <button className="btn-primary album-open-btn" onClick={toggleLimit}>
+              {limit === 8 ? 'See More' : 'See Less'}
+            </button>
+          </div>
+        )}
       </div>
-
-      {albumOpen && (
-        <AlbumViewer
-          photos={visible}
-          startIndex={albumIndex}
-          onClose={() => setAlbumOpen(false)}
-        />
-      )}
     </section>
   );
 }

@@ -10,7 +10,7 @@ export default function About() {
 
         {/* Image side */}
         <div className="about-img-wrap reveal from-left">
-          <img src="/photos/photo1.jpg" alt="Bhushan Lawane" />
+          <img src={`${import.meta.env.BASE_URL}photos/photo1.jpg`} alt="Bhushan Lawane" />
           <div className="about-badge">
             <span>10+</span>
             <p>Years of Experience</p>

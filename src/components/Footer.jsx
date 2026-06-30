@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="footer-inner container">
 
         <div className="footer-brand">
-          <img src="/photos/logo.png" alt="Gemray Studio" />
+          <img src={`${import.meta.env.BASE_URL}photos/logo.png`} alt="Gemray Studio" />
           <div className="footer-brand-name">
             <span className="fb-main">Gemray</span>
             <span className="fb-sub">Studio</span>

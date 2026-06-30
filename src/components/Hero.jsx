@@ -97,7 +97,7 @@ export default function Hero() {
         disablePictureInPicture
         onError={() => setVideoError(true)}
       >
-        <source src="/vid/bg.mp4" type="video/mp4" />
+        <source src={`${import.meta.env.BASE_URL}vid/bg.mp4`} type="video/mp4" />
       </video>
 
       {/* Fallback gradient when video fails */}
